@@ -1,0 +1,229 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "extendedLocation": {
+            "type": "object"
+        },
+        "virtualNetworkName": {
+            "type": "string"
+        },
+        "resourceGroup": {
+            "type": "string"
+        },
+        "addressSpaces": {
+            "type": "array"
+        },
+        "ipv6Enabled": {
+            "type": "bool"
+        },
+        "subnetCount": {
+            "type": "int"
+        },
+        "subnet0_name": {
+            "type": "string"
+        },
+        "subnet0_addressRange": {
+            "type": "string"
+        },
+        "subnet1_name": {
+            "type": "string"
+        },
+        "subnet1_addressRange": {
+            "type": "string"
+        },
+        "subnet2_name": {
+            "type": "string"
+        },
+        "subnet2_addressRange": {
+            "type": "string"
+        },
+        "subnet3_name": {
+            "type": "string"
+        },
+        "subnet3_addressRange": {
+            "type": "string"
+        },
+        "subnet0_nsg_name": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the network security group for NetOps"
+            }
+        },
+        "subnet1_nsg_name": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the network security group for Incubator"
+            }
+        },
+        "subnet2_nsg_name": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the network security group for SecOps"
+            }
+        },
+        "subnet3_nsg_name": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the name of the network security group for OffSec"
+            }
+        },
+        "ddosProtectionPlanEnabled": {
+            "type": "bool"
+        },
+        "firewallEnabled": {
+            "type": "bool"
+        },
+        "bastionEnabled": {
+            "type": "bool"
+        },
+        "bastionName": {
+            "type": "string"
+        },
+        "bastionSubnetAddressSpace": {
+            "type": "string"
+        },
+        "publicIpAddressForBastion": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/VirtualNetworks",
+            "apiVersion": "2021-01-01",
+            "location": "[parameters('location')]",
+            "extendedLocation": "[if(empty(parameters('extendedLocation')), json('null'), parameters('extendedLocation'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('subnet0_nsg_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('subnet1_nsg_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('subnet2_nsg_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('subnet3_nsg_name'))]"
+            ],
+            "tags": {
+                "Attack Defence Lab": "Virtual Network"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "172.16.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "NetOps",
+                        "properties": {
+                            "addressPrefix": "172.16.1.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('subnet0_nsg_name'))]"
+                              }
+                        }
+                    },
+                    {
+                        "name": "Incubator",
+                        "properties": {
+                            "addressPrefix": "172.16.2.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('subnet1_nsg_name'))]"
+                              }
+                        }
+                    },
+                    {
+                        "name": "SecOps",
+                        "properties": {
+                            "addressPrefix": "172.16.3.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('subnet2_nsg_name'))]"
+                              }
+                        }
+                    },
+                    {
+                        "name": "OffSec",
+                        "properties": {
+                            "addressPrefix": "172.16.4.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('subnet3_nsg_name'))]"
+                              }
+                        }
+                    },
+                    {
+                        "name": "AzureBastionSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('bastionSubnetAddressSpace')]"
+                        }
+                    }
+                ],
+                "enableDdosProtection": "[parameters('ddosProtectionPlanEnabled')]"
+            }
+        },
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('subnet0_nsg_name')]",
+            "location": "[parameters('location')]",
+            "tags": {}
+        },
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('subnet1_nsg_name')]",
+            "location": "[parameters('location')]",
+            "tags": {}
+        },
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('subnet2_nsg_name')]",
+            "location": "[parameters('location')]",
+            "tags": {}
+        },
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('subnet3_nsg_name')]",
+            "location": "[parameters('location')]",
+            "tags": {}
+        },
+        {
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[parameters('publicIpAddressForBastion')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "type": "Microsoft.Network/bastionHosts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('bastionName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+                "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressForBastion'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "IpConf",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), 'AzureBastionSubnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressForBastion'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
