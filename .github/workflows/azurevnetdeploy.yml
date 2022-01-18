@@ -17,7 +17,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Deploy ARM Template
+      - name: Deploy Attack-Defence Lab VNet
         uses: azure/CLI@v1
         with:
           inlineScript: |
