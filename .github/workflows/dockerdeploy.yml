@@ -5,7 +5,7 @@ name: DockerDeploy
 
 jobs:
 
-    Initiate-VM-Deployment:
+    Initiate-Docker-Deployment:
       runs-on: ubuntu-latest
       steps:
 
