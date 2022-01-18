@@ -17,26 +17,20 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      # - name: Download Docker Installation Script
-      #   uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/scripts/docker.sh"
+      - name: Download Docker Installation Script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/scripts/docker.sh"
 
-      # - name: Add Execution for Shell Script
-      #   uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "chmod +x /tmp/docker.sh"
+      - name: Add Execution for Shell Script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "chmod +x /tmp/docker.sh"
 
       - name: Deploy Docker Package
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo bash ./tmp/deb.sh"
-
-      - name: Set Permission for Docker User
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo usermod -aG docker ${USER}"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo bash /tmp/docker.sh"
