@@ -23,7 +23,7 @@ jobs:
           inlineScript: |
             az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/scripts/docker.sh"
 
-      - name: Add Execution for Shell Script
+      - name: Make Script Executable
         uses: azure/CLI@v1
         with:
           inlineScript: |
