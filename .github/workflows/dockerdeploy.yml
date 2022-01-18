@@ -1,0 +1,27 @@
+#on: [push]
+on:
+  workflow_dispatch:
+name: DeployDocker
+
+jobs:
+
+    Initiate-Docker-Deployment:
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Deploy Docker
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp  https://github.com/gyaansastra/Attack-Defense-Lab/blob/dev/scripts/docker.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "chmod +x /tmp/docker.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo ./tmp/deb.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo usermod -aG docker ${USER}"
