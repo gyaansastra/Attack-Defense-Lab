@@ -21,7 +21,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce:2.9.3"
 
       - name: Deploying Wireshark #Access port http://localhost:3000/
         uses: azure/CLI@v1
