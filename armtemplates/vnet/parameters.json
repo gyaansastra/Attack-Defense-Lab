@@ -9,7 +9,7 @@
             "value": {}
         },
         "virtualNetworkName": {
-            "value": "Attack_Defense_Lab_VNet"
+            "value": "VNet"
         },
         "resourceGroup": {
             "value": "Attack_Defense_Lab"
