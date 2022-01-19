@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: AzureVnetDeploy
+name: Deploy Virtual Network on Azure
 
 jobs:
 

@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: DockerDeploy
+name: Initiate Docker & Docker Compose Installation
 
 jobs:
 

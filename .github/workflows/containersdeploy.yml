@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: Container Deployment
+name: Initiate NetOps Monitoring Container Deployment
 
 jobs:
 
@@ -17,11 +17,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      # - name: Deploying Portainer #Access port https://localhost:9443
-      #   uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
+      - name: Deploying Portainer #Access port https://localhost:9443
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
 
       - name: Deploying Wireshark #Access port http://localhost:3000/
         uses: azure/CLI@v1

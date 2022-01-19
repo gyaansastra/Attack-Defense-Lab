@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: AzureVmDeploy
+name: Deploy Virtual Machines on Azure
 
 jobs:
 
