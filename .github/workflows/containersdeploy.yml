@@ -5,7 +5,7 @@ name: Container Deployment
 
 jobs:
 
-    Initiate-Container-Deployment:
+    Initiate-NetOps-Containers-Deployment:
       runs-on: ubuntu-latest
       steps:
 
@@ -29,10 +29,25 @@ jobs:
       #     inlineScript: |
       #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
 
-      - name: Deploy NetOps Package
+      - name: Deploy Grafana & Prometheus
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            # az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo apt install docker-compose -y"
             az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -O docker-compose.yml https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus.yml -P /tmp"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker-compose up -d /tmp/docker-compose.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+
+      # - name: Deploy NetOps Package
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       # az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo apt install docker-compose -y"
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -O docker-compose.yml https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus.yml -P /tmp"
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+
+      # - name: Deploy NetOps Package
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       # az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo apt install docker-compose -y"
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -O docker-compose.yml https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus.yml -P /tmp"
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
