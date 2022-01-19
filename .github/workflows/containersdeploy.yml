@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: Containe rDeploy
+name: Container Deployment
 
 jobs:
 
