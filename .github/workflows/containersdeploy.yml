@@ -1,0 +1,38 @@
+#on: [push]
+on:
+  workflow_dispatch:
+name: DockerDeploy
+
+jobs:
+
+    Initiate-Container-Deployment:
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # - name: Deploying Portainer #Access port https://localhost:9443
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
+
+      # - name: Deploying Wireshark #Access port http://localhost:3000/
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
+
+      - name: Deploy NetOps Package
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            # az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo apt install docker-compose -y"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/containers/grafana-prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker-compose up -d /tmp/grafana-prometheus.yml"
