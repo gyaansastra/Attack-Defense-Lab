@@ -34,5 +34,5 @@ jobs:
         with:
           inlineScript: |
             # az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo apt install docker-compose -y"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/containers/grafana-prometheus.yml"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker-compose up -d /tmp/grafana-prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -O docker-compose.yml https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/containers/grafana-prometheus.yml -P /tmp"
+            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker-compose up -d /tmp/docker-compose.yml"
