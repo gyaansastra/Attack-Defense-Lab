@@ -18,7 +18,7 @@
             "value": "Incubator"
         },
         "virtualNetworkId": {
-            "value": "/subscriptions/022af35d-83b7-4090-b534-f76293a759a5/resourceGroups/Attack_Defense_Lab/providers/Microsoft.Network/virtualNetworks/VNet"
+            "value": "/subscriptions/022af35d-83b7-4090-b534-f76293a759a5/resourceGroups/Attack_Defense_Lab/providers/Microsoft.Network/virtualNetworks/Attack_Defense_Lab_VNet"
         },
         "virtualMachineName": {
             "value": "Incubator-VM"
