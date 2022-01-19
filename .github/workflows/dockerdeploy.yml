@@ -21,16 +21,16 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/scripts/docker.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/scripts/docker.sh"
 
       - name: Make Script Executable
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "chmod +x /tmp/docker.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "chmod +x /tmp/docker.sh"
 
       - name: Deploy Docker Package
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo bash /tmp/docker.sh"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo bash /tmp/docker.sh"

@@ -21,19 +21,19 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker run -d -p 7777:7777 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data cr.portainer.io/portainer/portainer-ce"
 
       - name: Deploying Wireshark #Access port http://localhost:3000/
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
 
       - name: Deploy Grafana & Prometheus #Access port http://localhost:3030/
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus/docker-compose.yml"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/prometheus/config/prometheus.yml"
-            az vm run-command invoke -g Attack_Defense_Lab -n testvm --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus/docker-compose.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/prometheus/config/prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
