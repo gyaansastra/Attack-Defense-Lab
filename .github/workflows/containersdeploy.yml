@@ -33,7 +33,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/grafana-prometheus/docker-compose.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/grafana-prometheus/docker-compose.yml"
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
-            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/docker-compose/prometheus/config/prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/prometheus/config/prometheus.yml"
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
