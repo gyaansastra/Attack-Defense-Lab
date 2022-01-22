@@ -1,31 +1,18 @@
-version: "3.9"  # optional since v1.27.0
-services:
-  jndi:
-    build:
-      context: .
-      dockerfile: Dockerfile-jndi
-    ports:
-      - "8888:8888"
-      - "1389:1389"
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    volumes:
-      - tmp:/tmp
-    links:
-      - jndi
-    depends_on:
-      - jndi
-  exploit:
-   build:
-     context: .
-     dockerfile: Dockerfile-exploit
-   volumes:
-     - tmp:/tmp
-   depends_on:
-     - app
-     - jndi
+version: '3'
 
 volumes:
   tmp:
+
+services:
+  log4shell-poc1:
+    image: gyaansastra/log4shell-poc1:latest
+    container_name: log4shell-poc1
+    ports:
+      - "5050:8080"
+
+  log4shell-poc1-jndi:
+    image: gyaansastra/log4shell-poc1-jndi:latest
+    container_name: log4shell-poc1-jndi
+    ports:
+      - "8888:8888"
+      - "1389:1389"
