@@ -47,16 +47,6 @@ jobs:
             --template-file armtemplates/vm/template.json \
             --parameters armtemplates/vm/secopsparameters.json
 
-            - name: Deploy Incubator Virtual Machine
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az deployment group create \
-            --name VirtualNetworkADeployment \
-            --resource-group Attack_Defense_Lab \
-            --template-file armtemplates/vm/template.json \
-            --parameters armtemplates/vm/incubatorparameters.json
-
       - name: Deploy OffSec Virtual Machine
         uses: azure/CLI@v1
         with:
