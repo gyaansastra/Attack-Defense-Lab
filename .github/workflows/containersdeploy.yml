@@ -28,8 +28,11 @@ jobs:
         with:
           inlineScript: |
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
+            az vm run-command invoke -g Attack_Defense_Lab -n Incubator-VM --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
+            az vm run-command invoke -g Attack_Defense_Lab -n OffSec-VM --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
+            az vm run-command invoke -g Attack_Defense_Lab -n SecOps-VM --command-id RunShellScript --scripts "sudo docker run -d --name=wireshark --net=host --cap-add=NET_ADMIN -e PUID=1000 -e PGID=1000 -e TZ=Australia/Sydney -p 3000:3000 -v /var/lib/docker/volumes/wireshark_data:/config --restart unless-stopped lscr.io/linuxserver/wireshark"
 
-      - name: Deploy Grafana & Prometheus #Access port http://localhost:3030/
+      - name: Deploy Grafana & Prometheus for NetOps #Access port http://localhost:3030/
         uses: azure/CLI@v1
         with:
           inlineScript: |
@@ -37,3 +40,20 @@ jobs:
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/prometheus/config/prometheus.yml"
             az vm run-command invoke -g Attack_Defense_Lab -n NetOps-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
+      
+      - name: Deploy Prometheus, Node_Exporter & Cadvisor for SecOps, Incubator & Offsec #Access port http://localhost:3030/
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm run-command invoke -g Attack_Defense_Lab -n Incubator-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/grafana-prometheus/non-netops/docker-compose.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n OffSec-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/grafana-prometheus/non-netops/docker-compose.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n SecOps-VM --command-id RunShellScript --scripts "wget -P /tmp https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/grafana-prometheus/non-netops/docker-compose.yml"         
+            az vm run-command invoke -g Attack_Defense_Lab -n Incubator-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+            az vm run-command invoke -g Attack_Defense_Lab -n OffSec-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+            az vm run-command invoke -g Attack_Defense_Lab -n SecOps-VM --command-id RunShellScript --scripts "cd /tmp && sudo docker-compose up -d"
+            az vm run-command invoke -g Attack_Defense_Lab -n Incubator-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/prometheus/config/prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n OffSec-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/prometheus/config/prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n SecOps-VM --command-id RunShellScript --scripts "sudo wget -P /etc/prometheus/ https://raw.githubusercontent.com/gyaansastra/Attack-Defense-Lab/dev/infrastructuremonitor/prometheus/config/prometheus.yml"
+            az vm run-command invoke -g Attack_Defense_Lab -n Incubator-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
+            az vm run-command invoke -g Attack_Defense_Lab -n OffSec-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"
+            az vm run-command invoke -g Attack_Defense_Lab -n SecOps-VM --command-id RunShellScript --scripts "sudo docker-compose restart  prometheus"

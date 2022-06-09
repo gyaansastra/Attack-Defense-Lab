@@ -47,6 +47,26 @@ jobs:
             --template-file armtemplates/vm/template.json \
             --parameters armtemplates/vm/secopsparameters.json
 
+            - name: Deploy Incubator Virtual Machine
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create \
+            --name VirtualNetworkADeployment \
+            --resource-group Attack_Defense_Lab \
+            --template-file armtemplates/vm/template.json \
+            --parameters armtemplates/vm/incubatorparameters.json
+
+      - name: Deploy OffSec Virtual Machine
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create \
+            --name VirtualNetworkADeployment \
+            --resource-group Attack_Defense_Lab \
+            --template-file armtemplates/vm/template.json \
+            --parameters armtemplates/vm/offsecparameters.json
+
       - name: Update NetOps Virtual Machine Credential
         env:
           AZURE_VM_ADMIN: ${{ secrets.AZURE_VM_ADMIN }}
@@ -73,3 +93,12 @@ jobs:
         with:
           inlineScript: |
             az vm user update -u $AZURE_VM_ADMIN -p $AZURE_VM_PASSWORD -g Attack_Defense_Lab -n SecOps-VM
+      
+      - name: Update OffSec Virtual Machine Credential
+        env:
+          AZURE_VM_ADMIN: ${{ secrets.AZURE_VM_ADMIN }}
+          AZURE_VM_PASSWORD: ${{ secrets.AZURE_VM_PASSWORD }}
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vm user update -u $AZURE_VM_ADMIN -p $AZURE_VM_PASSWORD -g Attack_Defense_Lab -n OffSec-VM
