@@ -1,7 +1,7 @@
 #on: [push]
 on:
   workflow_dispatch:
-name: Initiate NetOps Monitoring Container Deployment
+name: Initiate Monitoring Container Deployment
 
 jobs:
 
