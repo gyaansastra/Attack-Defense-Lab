@@ -17,15 +17,15 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      # - name: Deploy Attack-Defence Lab VNet
-      #   uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       az deployment group create \
-      #       --name VirtualNetworkADeployment \
-      #       --resource-group Attack_Defense_Lab \
-      #       --template-file armtemplates/vnet/template.json \
-      #       --parameters armtemplates/vnet/parameters.json
+      - name: Deploy Attack-Defence Lab VNet
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create \
+            --name VirtualNetworkADeployment \
+            --resource-group Attack_Defense_Lab \
+            --template-file armtemplates/vnet/template.json \
+            --parameters armtemplates/vnet/parameters.json
 
       - name: Deploy Network Security Groups Rules
         uses: azure/CLI@v1
