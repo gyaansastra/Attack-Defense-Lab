@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "australiaeast"
+        },
+        "networkInterfaceName": {
+            "value": "secops-nic"
+        },
+        "enableAcceleratedNetworking": {
+            "value": true
+        },
+        "networkSecurityGroupId": {
+            "value": "/subscriptions/022af35d-83b7-4090-b534-f76293a759a5/resourceGroups/Attack_Defense_Lab/providers/Microsoft.Network/networkSecurityGroups/SecOps_Subnet_Nsg"
+        },
+        "subnetName": {
+            "value": "SecOps"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/022af35d-83b7-4090-b534-f76293a759a5/resourceGroups/Attack_Defense_Lab/providers/Microsoft.Network/virtualNetworks/VNet"
+        },
+        "virtualMachineName": {
+            "value": "SecOps-VM"
+        },
+        "virtualMachineComputerName": {
+            "value": "SecOps-VM"
+        },
+        "virtualMachineRG": {
+            "value": "Attack_Defense_Lab"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "adminUsername": {
+            "value": "attackdefenseadmin"
+        },
+        "adminPassword": {
+            "value": "secrets.AZURE_VM_PASSWORD"
+        }
+    }
+}

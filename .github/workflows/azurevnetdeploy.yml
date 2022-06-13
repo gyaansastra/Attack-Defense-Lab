@@ -1,0 +1,35 @@
+#on: [push]
+on:
+  workflow_dispatch:
+name: Deploy Virtual Network on Azure
+
+jobs:
+
+    Initiate-VNet-Deployment:
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Deploy Attack-Defence Lab VNet
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create \
+            --name VirtualNetworkADeployment \
+            --resource-group Attack_Defense_Lab \
+            --template-file armtemplates/vnet/template.json \
+            --parameters armtemplates/vnet/parameters.json
+
+      - name: Deploy Network Security Groups Rules
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az network nsg rule create -g Attack_Defense_Lab --nsg-name NetOps_Subnet_Nsg -n "Allow Portainer" --priority 100 --source-address-prefixes '*' --destination-address-prefixes '172.16.1.4' --destination-port-ranges '9443' --direction Inbound --access Allow --protocol Tcp --description "Allow Portainer"
+            az network nsg rule create -g Attack_Defense_Lab --nsg-name NetOps_Subnet_Nsg -n "Allow Grafana" --priority 101 --source-address-prefixes '*' --destination-address-prefixes '172.16.1.4' --destination-port-ranges '3030' --direction Inbound --access Allow --protocol Tcp --description "Allow Grafana"
